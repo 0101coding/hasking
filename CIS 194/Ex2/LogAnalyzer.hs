@@ -21,7 +21,8 @@ parseMessage c
 insert :: LogMessage  -> MessageTree -> MessageTree
 insert lm Leaf = Node Leaf lm Leaf
 insert (Unknown _) mt= mt 
-insert l1@(LogMessage _ x _) (Node left l2@(LogMessage _ y _) right) 
-        | x < y = Node (insert l1 left) l2 right
+insert l1@(LogMessage _ x _) m@(Node left l2@(LogMessage _ y _) right) 
+        | x <= y = Node (insert l1 left) l2 right
         | x > y = Node left l2 (insert l1 right) 
-
+        | otherwise = m
+insert _ m@(Node _ (Unknown _) _) = m
