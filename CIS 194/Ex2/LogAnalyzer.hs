@@ -18,11 +18,10 @@ parseMessage c
               fromThird = unwords $  drop 4 arr
               fromFourth = unwords $ drop 4 arr
 
-
-data MessageTree = Leaf | Node MessageTree LogMessage MessageTree
-
 insert :: LogMessage  -> MessageTree -> MessageTree
+insert lm Leaf = Node Leaf lm Leaf
+insert (Unknown _) mt= mt 
+insert l1@(LogMessage _ x _) (Node left l2@(LogMessage _ y _) right) 
+        | x < y = Node (insert l1 left) l2 right
+        | x > y = Node left l2 (insert l1 right) 
 
-insert x (Node left v right) |
-            x < v = Node (insert x left) v right
-            x > v = Node right v (insert x right) 
