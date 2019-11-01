@@ -29,7 +29,14 @@ insert _ m@(Node _ (Unknown _) _) = m
 
 
 build ::[LogMessage] -> MessageTree
-build = undefined
+build x = foldl (\y -> insert y Leaf ) x
 
+
+
+
+--Test work done
 mTree :: MessageTree
 mTree = Node Leaf (parseMessage "I 29 la la la") Leaf
+
+mTree' :: MessageTree
+mTree' = insert (parseMessage "I 30 la la la") mTree
